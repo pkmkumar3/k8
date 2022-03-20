@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+db:
+  image: mysql
+  command: --default-authentication-plugin=mysql_native_password
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: redhat
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: testdb1
+    MYSQL_USER: testuser
+    MYSQL_PASSWORD: root
+  ports:
+    - 3306:3306
+web:
+  depends_on:
+    - db
+  image: tomcat
+  volumes:
+    - /opt/apache-tomcat-8.5.76/webapps/Spring3HibernateApp.war:/usr/local/tomcat/webapps/Spring3HibernateApp.war
+  ports:
+    - '8082:8080'
+  environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb1
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: redhat
