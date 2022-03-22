@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maven
+  labels:
+    app: maven
+spec:
+
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maven
+  template:
+    metadata:
+      name: maven
+      labels:
+        app: maven
+    spec:
+      imagePullSecrets:
+      - name: acr-rega
+      containers:
+      - name: maven
+        image: testingdocker23.azurecr.io/test:27
+
+        ports:
+        - containerPort: 8080
+        env:
+          - name:  mysql_Server
+            valueFrom:
+              configMapKeyRef:
+                name:  mysql-configmap
+                key:  database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  maven
+spec:
+  selector:
+    app:  maven
+  type:  LoadBalancer
+  ports:
+  - protocol: TCP
+    port:  8080
+    targetPort:  8080
+    nodePort: 30000
