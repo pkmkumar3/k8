@@ -7,4 +7,3 @@ WORKDIR /root/spring/
 RUN ls -l
 WORKDIR /root/spring
 CMD java -jar spring-petclinic-2.6.0-SNAPSHOT.jar
-EXPOSE 8080
