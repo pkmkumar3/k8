@@ -17,7 +17,7 @@ spec:
         app: maven
     spec:
       imagePullSecrets:
-      - name: acr-rega
+      - name: mohit
       containers:
       - name: maven
         image: testingdocker23.azurecr.io/test:27
