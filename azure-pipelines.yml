@@ -1,31 +1,38 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - main
-
-resources:
-- repo: self
-
-variables:
-  tag: '$(Build.BuildId)'
-
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build stage
   jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: mysql:5.7.8
-    variables:
-      imageName: 'mysql_new'
-    steps:
-    - task: MysqlDeploymentOnMachineGroup@1
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: 'k8/Dockerfile'
-        tags: |
-          $(tag)
+    - job: Build
+      displayName: build
+      pool:
+       mypool
+      steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - task: Docker@2
+        displayName: build
+        inputs:
+          containerRegistry: 'testing1'
+          repository: 'test'
+          command: build
+          Dockerfile: 'dockerfile'
+      - task: Docker@2
+        displayName: psuh
+        inputs:
+          containerRegistry: 'testing1'
+          repository: 'test'
+          command: 'push'
+          Dockerfile: 'dockerfile'
+  
+          
+    
