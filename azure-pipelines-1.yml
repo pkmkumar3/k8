@@ -7,7 +7,9 @@ trigger:
 - main
 
 pool:
-  mypool 
+  name: mypool
+  demands:
+  - agent.name -equals az
 
 steps:
 - task: Maven@3
