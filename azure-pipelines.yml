@@ -62,14 +62,14 @@ stages:
             inputs:
               action: 'deploy'
               kubernetesServiceConnection: 'spring_dep'
-              manifests: '$(System.DefaultWorkingDirectory)/_pkmkumar3_k8/mysql_secret.yaml'
+              manifests: '$(System.DefaultWorkingDirectory)/mysql_secret.yaml'
 
 
           - task: KubernetesManifest@0
             inputs:
               action: 'deploy'
               kubernetesServiceConnection: 'spring_dep'
-              manifests: '$(DefaultWorkingDirectory)/_pkmkumar3_k8/maven.yaml'
+              manifests: '$(DefaultWorkingDirectory)/maven.yaml'
               containers: 'testingdocker23.azurecr.io/test:$(Release.Artifacts._k8_deploy-CI.BuildId)'
               imagePullSecrets: 'acr'
         
