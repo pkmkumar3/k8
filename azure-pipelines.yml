@@ -42,3 +42,34 @@ stages:
             containerRegistry: 'testing1'
             repository: 'test'
             command: 'push'
+          
+  - stage: deploy
+    displayName: Deployment
+    jobs:
+      - job: Deployment
+        displayName: Deploy
+        pool:
+          name: mypool
+        steps:
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'createSecret'
+              kubernetesServiceConnection: 'spring_dep'
+              secretType: 'dockerRegistry'
+              secretName: 'acr'
+              dockerRegistryEndpoint: 'testing1'
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'spring_dep'
+              manifests: '$(System.DefaultWorkingDirectory)/_pkmkumar3_k8/mysql_secret.yaml'
+
+
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'spring_dep'
+              manifests: '$(DefaultWorkingDirectory)/_pkmkumar3_k8/maven.yaml'
+              containers: 'testingdocker23.azurecr.io/test:$(Release.Artifacts._k8_deploy-CI.BuildId)'
+              imagePullSecrets: 'acr'
+        
