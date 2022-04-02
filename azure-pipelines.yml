@@ -82,6 +82,6 @@ stages:
               script: |
                 # Write your commands here
                 
-                echo 'testingdocker23/$test:$(release.artifacts.pkmkumar3.k8-ci.BuildId)'
+                echo 'testingdocker23/$test:$(release.artifacts.pkmkumar3.k8.BuildId)'
           
         
