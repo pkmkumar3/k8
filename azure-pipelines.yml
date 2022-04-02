@@ -51,6 +51,7 @@ stages:
         pool:
           name: mypool
         steps:
+        
           - task: KubernetesManifest@0
             inputs:
               action: 'createSecret'
@@ -66,10 +67,21 @@ stages:
 
 
           - task: KubernetesManifest@0
+            displayName: maven
             inputs:
               action: 'deploy'
               kubernetesServiceConnection: 'spring_dep'
               manifests: '$(System.DefaultWorkingDirectory)/maven.yaml'
-              containers: 'testingdocker23/test:$(containerRegistry)/$(imageRepository2):$(release.artifacts.pkmkumar3.k8-ci.BuildId)'
+              containers: '$(containerRegistry)/$(imageRepository2):$(release.artifacts.pkmkumar3.k8-ci.BuildId)'
               imagePullSecrets: 'acr'
+              
+          - task: Bash@3
+            displayName: bash
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Write your commands here
+                
+                echo '$(containerRegistry)/$(imageRepository2):$(release.artifacts.pkmkumar3.k8-ci.BuildId)'
+          
         
