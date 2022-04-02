@@ -70,6 +70,6 @@ stages:
               action: 'deploy'
               kubernetesServiceConnection: 'spring_dep'
               manifests: '$(System.DefaultWorkingDirectory)/maven.yaml'
-              containers: '$(containerRegistry)/test:$(release.artifacts._pkmkumar3.k8.BuildId)'
+              containers: 'testingdocker23/test:$(release.artifacts._pkmkumar3.k8.BuildId)'
               imagePullSecrets: 'acr'
         
