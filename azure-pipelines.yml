@@ -72,7 +72,7 @@ stages:
               action: 'deploy'
               kubernetesServiceConnection: 'spring_dep'
               manifests: '$(System.DefaultWorkingDirectory)/maven.yaml'
-              containers: '$(containerRegistry)/$(imageRepository2):$(release.artifacts.pkmkumar3.k8-ci.BuildId)'
+              containers: '$(containerRegistry)/$(imageRepository2):$(Build.BuildId)'
               imagePullSecrets: 'acr'
               
           - task: Bash@3
