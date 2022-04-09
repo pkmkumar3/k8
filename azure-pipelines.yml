@@ -64,7 +64,7 @@ stages:
           inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'spring_dep'
-            manifests: '$(System.Default WorkingDirectory)/mysql_secret.yaml'
+            manifests: '$(System.DefaultWorkingDirectory)/mysql_secret.yaml'
         
         - task: KubernetesManifest@0
           inputs:
