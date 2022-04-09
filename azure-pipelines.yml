@@ -58,7 +58,7 @@ stages:
             kubernetesServiceConnection: 'spring_dep'
             secretType: 'dockerRegistry'
             secretName: 'acr1'
-            dockerRegistryEndpoint: 'testing1'
+            dockerRegistryEndpoint: 'testing'
         - task: KubernetesManifest@0
           displayName: mysql_secret
           inputs:
