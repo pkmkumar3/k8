@@ -42,3 +42,46 @@ stages:
             containerRegistry: 'testing1'
             repository: 'test'
             command: 'push'
+          
+  - stage: deploy
+    displayName: Deployment
+    jobs:
+      - job: Deployment
+        displayName: Deploy
+        pool:
+          name: mypool
+        steps:
+        
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'createSecret'
+              kubernetesServiceConnection: 'spring_dep'
+              secretType: 'dockerRegistry'
+              secretName: 'acr'
+              dockerRegistryEndpoint: 'testing1'
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'spring_dep'
+              manifests: '$(System.DefaultWorkingDirectory)/mysql_secret.yaml'
+
+
+          - task: KubernetesManifest@0
+            displayName: maven
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'spring_dep'
+              manifests: '$(System.DefaultWorkingDirectory)/maven.yaml'
+              containers: '$(containerRegistry)/$(imageRepository2):$(Build.BuildId)'
+              imagePullSecrets: 'acr'
+              
+          - task: Bash@3
+            displayName: bash
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Write your commands here
+                
+                echo 'testingdocker23/$test:$(Build.BuildId)'
+          
+        
