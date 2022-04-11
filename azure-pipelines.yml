@@ -39,9 +39,10 @@ stages:
             
         - task: Docker@2
           inputs:
-            containerRegistry: 'testing1'
+            containerRegistry: 'testing'
             repository: 'test'
             command: 'push'
+            tags: $(Build.BuildId)
 
   - stage: Deploy
     displayName: Deploy
@@ -59,18 +60,8 @@ stages:
             secretType: 'dockerRegistry'
             secretName: 'acr1'
             dockerRegistryEndpoint: 'testing'
-        - task: KubernetesManifest@0
-          displayName: mysql_secret
-          inputs:
-            action: 'deploy'
-            kubernetesServiceConnection: 'spring_dep'
-            manifests: '$(System.DefaultWorkingDirectory)/mysql_secret.yaml'
-        
-        - task: KubernetesManifest@0
-          inputs:
-            action: 'deploy'
-            kubernetesServiceConnection: 'spring_dep'
-            manifests: '$(System.DefaultWorkingDirectory)/mysqldb.yaml'
+  
+       
             
         - task: KubernetesManifest@0
           displayName: configmap
