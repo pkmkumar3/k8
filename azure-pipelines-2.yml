@@ -35,5 +35,5 @@ stages:
               script: |
                 # Write your commands here
                 
-                echo '$(aa01) > secret.txt'
+                echo '$(aa001) > secret.txt'
                 cat secret.txt
