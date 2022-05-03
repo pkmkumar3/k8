@@ -23,6 +23,7 @@ stages:
                 # Write your commands here
                 
                 echo $(my-var)
+                echo $(fruit)
           - task: AzureKeyVault@2
             inputs:
               azureSubscription: 'Pay-As-You-Go(e5be4f87-0283-49b5-ad1a-f0b2dfeba7a1)'
