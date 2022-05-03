@@ -21,7 +21,7 @@ stages:
               targetType: 'inline'
               script: |
                 # Write your commands here
-                
+                echo $(aa001) 
                 echo $(my-var)
                 echo $(fruit)
           - task: AzureKeyVault@2
