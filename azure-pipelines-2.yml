@@ -25,8 +25,8 @@ stages:
                 echo $(my-var)
           - task: AzureKeyVault@2
             inputs:
-              azureSubscription: 'Pay-As-You-Go (e5be4f87-0283-49b5-ad1a-f0b2dfeba7a1)'
-              KeyVaultName: 'pkmkumar3'
+              azureSubscription: 'Pay-As-You-Go(e5be4f87-0283-49b5-ad1a-f0b2dfeba7a1)'
+              KeyVaultName: 'pkmkumar31'
               SecretsFilter: '*'
               RunAsPreJob: false
           - task: Bash@3
@@ -35,5 +35,5 @@ stages:
               script: |
                 # Write your commands here
                 
-                echo '$(pkmkumar3) > secret.txt'
+                echo '$(pkmkumar31) > secret.txt'
                 cat secret.txt
