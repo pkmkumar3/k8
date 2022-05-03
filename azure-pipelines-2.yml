@@ -1,8 +1,8 @@
 trigger:
 - main
 variables:
-- group: my-group
-- name: my-variable
+- group: my-grp
+- name: my-var
   value: 'testing'
 
 stages:
@@ -21,4 +21,4 @@ stages:
               script: |
                 # Write your commands here
                 
-                echo $(my-variable)
+                echo $(my-var)
