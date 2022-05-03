@@ -1,8 +1,20 @@
-variables:
-- group: my-variable-group
-- name: my-passed-variable
-  value: $[variables.myhello] # uses runtime expression
+trigger:
+- main
+stages:
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+         name: mypool
+        
+      
+        variables:
+            - group: my-variable-group
+            - name: my-passed-variable
+              value: $[variables.myhello] # uses runtime expression
 
-steps:
-- script: echo $(myhello) # uses macro syntax
-- script: echo $(my-passed-variable)
+        steps:
+          - script: echo $(myhello) # uses macro syntax
+          - script: echo $(my-passed-variable)
