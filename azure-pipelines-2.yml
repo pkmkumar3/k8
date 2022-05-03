@@ -1,5 +1,10 @@
 trigger:
 - main
+variables:
+  - group: my-variable-group
+  - name: my-passed-variable
+    value: $[variables.myhello] # uses runtime expression
+
 stages:
   - stage: build
     displayName: Build
@@ -8,12 +13,6 @@ stages:
         displayName: Build
         pool:
          name: mypool
-        
-      
-        variables:
-            - group: my-variable-group
-            - name: my-passed-variable
-              value: $[variables.myhello] # uses runtime expression
 
         steps:
           - script: echo $(myhello) # uses macro syntax
