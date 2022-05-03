@@ -1,9 +1,9 @@
 trigger:
 - main
 variables:
-  - group: my-variable-group
-  - name: my-passed-variable
-    value: $[variables.myhello] # uses runtime expression
+- group: my-group
+- name: my-variable
+  value: 'testing'
 
 stages:
   - stage: build
@@ -15,5 +15,10 @@ stages:
          name: mypool
 
         steps:
-          - script: echo $(myhello) # uses macro syntax
-          - script: echo $(my-passed-variable)
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Write your commands here
+                
+                echo $(my-variable)
