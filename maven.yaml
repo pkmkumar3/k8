@@ -20,7 +20,7 @@ spec:
 #       - name: mohit
       containers:
       - name: maven
-#        image: testingdocker23.azurecr.io/test:27
+        image: testingdocker23.azurecr.io/test:27
 
         ports:
         - containerPort: 8080
