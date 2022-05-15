@@ -1,0 +1,80 @@
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+trigger:
+- main
+stages:
+  - stage: Build
+    displayName: Build stage
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+         name: mypool
+        steps:
+        
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              # Write your commands here
+              
+              echo 'Hello world'
+            
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
+            
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'testing1'
+            repository: 'test'
+            command: 'build'
+            Dockerfile: '**/dockerfile'
+            
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'testing'
+            repository: 'test'
+            command: 'push'
+            tags: $(Build.BuildId)
+
+  - stage: Deploy
+    displayName: Deploy
+    jobs:
+      - job: deploy
+        displayName: Deploy k8
+        pool:
+         name: mypool
+        steps:
+        - task: KubernetesManifest@0
+          displayName: secrete
+          inputs:
+            action: 'createSecret'
+            kubernetesServiceConnection: 'spring_dep'
+            secretType: 'dockerRegistry'
+            secretName: 'acr1'
+            dockerRegistryEndpoint: 'testing'
+  
+       
+            
+        - task: KubernetesManifest@0
+          displayName: configmap
+          inputs:
+            action: 'deploy'
+            kubernetesServiceConnection: 'spring_dep'
+            manifests: '$(System.DefaultWorkingDirectory)/mysq_configmap.yaml' 
+
+        - task: KubernetesManifest@0
+          displayName: maven
+          inputs:
+            action: 'deploy'
+            kubernetesServiceConnection: 'spring_dep'
+            manifests: '$(System.DefaultWorkingDirectory)/maven.yaml'
+            containers: 'testingdocker23.azurecr.io/test:$(Build.BuildId)'
+            imagePullSecrets: 'acr1'

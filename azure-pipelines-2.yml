@@ -1,0 +1,40 @@
+trigger:
+- main
+variables:
+- group: my-grp
+- name: my-var
+  value: 'testing'
+
+stages:
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: Build
+        displayName: Build
+
+        pool:
+         name: mypool
+
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Write your commands here
+                echo $(aa001) 
+                echo $(my-var)
+                echo $(fruit)
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: 'Pay-As-You-Go(e5be4f87-0283-49b5-ad1a-f0b2dfeba7a1)'
+              KeyVaultName: 'pkmkumar31'
+              SecretsFilter: '*'
+              RunAsPreJob: false
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Write your commands here
+                
+                echo '$(aa001) > secret.txt'
+                cat secret.txt
