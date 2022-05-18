@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #{appname}#
+  labels:
+    app: #{appname}#
+spec:
+
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #{appname}#
+  template:
+    metadata:
+      name: #{appname}#
+      labels:
+        app: #{appname}#
+    spec:
+#       imagePullSecrets:
+#       - name: mohit
+      containers:
+      - name: #{appname}#
+        image: testingdocker23.azurecr.io/#{acrrepo}#:152
+
+        ports:
+        - containerPort: #{port}#
+        env:
+          - name:  mysql_Server
+            valueFrom:
+              configMapKeyRef:
+                name:  mysql-configmap
+                key:  database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  #{appname}#
+spec:
+  selector:
+    app:  #{appname}#
+  type:  LoadBalancer
+  ports:
+  - protocol: TCP
+    port:  80
+    targetPort:  #{port}#
+    nodePort: 30000
